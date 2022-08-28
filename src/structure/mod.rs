@@ -1,10 +1,5 @@
+pub mod queue;
 pub mod stack;
 
+pub use queue::Queue;
 pub use stack::Stack;
-
-pub struct Node<T> {
-    data: T,
-    next: NextNode<T>,
-}
-
-pub type NextNode<T> = Option<Box<Node<T>>>;
