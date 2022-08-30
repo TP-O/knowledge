@@ -1,5 +1,7 @@
+mod searching;
 mod sorting;
 mod structure;
+
 fn main() {
     // STACK
     // let mut s = structure::Stack::<u8>::new();
@@ -38,11 +40,51 @@ fn main() {
     // }
 
     // BUBBLE SORT
-    let mut arr: [i32; 5] = [5, 1, 2, 6, -2];
+    // let mut arr: [i32; 5] = [5, 1, 2, 6, -2];
 
-    sorting::bubble_sort(&mut arr, true);
+    // sorting::bubble_sort(&mut arr, true);
 
-    for e in arr {
-        println!("{}", e);
-    }
+    // for e in arr {
+    //     println!("{}", e);
+    // }
+
+    // SELECTION SORT
+    // let mut arr: [i32; 5] = [5, 1, 2, 6, -2];
+
+    // sorting::selection_sort(&mut arr, false);
+
+    // for e in arr {
+    //     println!("{}", e);
+    // }
+
+    // SINGLY LINKED LIST
+    // let mut sll = structure::SinglyLinkedList::<u8>::new();
+
+    // sll.push(33);
+    // sll.push(4);
+    // sll.push(5);
+    // sll.unshift(2);
+    // sll.unshift(1);
+    // sll.set(2, 3);
+
+    // for i in 0..sll.size() {
+    //     print!("{}, ", sll.get(i).unwrap());
+    // }
+
+    // println!();
+
+    // sll.shift();
+    // sll.pop();
+
+    // for i in 0..sll.size() {
+    //     print!("{}, ", sll.get(i).unwrap());
+    // }
+
+    // println!();
+
+    // BINARY SEARCH
+    let arr: [i32; 6] = [1, 2, 3, 4, 5, 6];
+    let found = searching::binary_search(&arr);
+
+    println!("Found at index: {}", found);
 }
