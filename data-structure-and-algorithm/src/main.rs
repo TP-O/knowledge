@@ -83,8 +83,26 @@ fn main() {
     // println!();
 
     // BINARY SEARCH
-    let arr: [i32; 6] = [1, 2, 3, 4, 5, 6];
-    let found = searching::binary_search(&arr);
+    // let arr: [i32; 6] = [1, 2, 3, 4, 5, 6];
+    // let found = searching::binary_search(&arr, 5);
 
-    println!("Found at index: {}", found);
+    // println!("Found at index: {}", found);
+
+    // LINEAR SEARCH
+    // let arr: [i32; 6] = [1, 2, 3, 4, 5, 6];
+    // let found = searching::linear_search(&arr, 5);
+
+    // println!("Found at index: {}", found);
+
+    // INTERPOLATION SEARCH
+    // let arr: [u128; 6] = [1, 2, 3, 4, 5, 6];
+    // let found = searching::interpolation_search(&arr, 5);
+
+    // println!("Found at index: {}", found);
+
+    // JUMP SEARCH
+    // let arr: [u128; 6] = [1, 2, 3, 4, 5, 6];
+    // let found = searching::jump_search(&arr, 5);
+
+    // println!("Found at index: {}", found);
 }

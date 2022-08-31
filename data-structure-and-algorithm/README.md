@@ -1,6 +1,6 @@
 # Overview
 
-All my knowledge of algorithms.
+All my knowledge of DSA.
 
 # Reference
 
