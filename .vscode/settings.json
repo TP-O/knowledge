@@ -1,0 +1,6 @@
+{
+    "gopls": {
+        "experimentalWorkspaceModule": true,
+    },
+    "editor.formatOnSave": true,
+}
