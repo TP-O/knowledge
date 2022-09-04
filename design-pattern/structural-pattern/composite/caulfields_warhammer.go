@@ -4,10 +4,10 @@ type Phage struct {
 	BigItem
 }
 
-func NewPhase(cost int) *Phage {
+func NewCaulfieldsWarhammer(cost int) *Phage {
 	return &Phage{
 		BigItem: BigItem{
-			name:              "Phage",
+			name:              "CaulfieldsWarhammer",
 			blacksmithingCost: cost,
 		},
 	}

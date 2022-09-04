@@ -2,19 +2,19 @@ package composite
 
 func Run() {
 	s := NewSheen(700)
-	rc1 := NewRubyCrystal(400)
-	rc2 := NewRubyCrystal(400)
-	ls := NewLongSword(350)
+	rc := NewRubyCrystal(400)
+	ls1 := NewLongSword(350)
+	ls2 := NewLongSword(350)
 
-	p := NewPhase(350)
-	p.AddMaterial(rc1)
-	p.AddMaterial(ls)
+	cw := NewCaulfieldsWarhammer(400)
+	cw.AddMaterial(ls1)
+	cw.AddMaterial(ls2)
 
 	k := NewKindlegem(400)
-	k.AddMaterial(rc2)
+	k.AddMaterial(rc)
 
 	ds := NewDevineSunderer(700)
-	ds.AddMaterial(p)
+	ds.AddMaterial(cw)
 	ds.AddMaterial(s)
 	ds.AddMaterial(k)
 

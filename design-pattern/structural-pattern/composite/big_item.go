@@ -5,7 +5,7 @@ import "fmt"
 type BigItem struct {
 	name              string
 	blacksmithingCost int
-	smallItems        []Item
+	materials         []Item
 }
 
 func (bi BigItem) Price() int {
@@ -13,7 +13,7 @@ func (bi BigItem) Price() int {
 
 	fmt.Println("**")
 
-	for _, item := range bi.smallItems {
+	for _, item := range bi.materials {
 		price += item.Price()
 	}
 
@@ -24,5 +24,5 @@ func (bi BigItem) Price() int {
 }
 
 func (bi *BigItem) AddMaterial(item Item) {
-	bi.smallItems = append(bi.smallItems, item)
+	bi.materials = append(bi.materials, item)
 }
