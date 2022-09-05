@@ -1,7 +1,7 @@
 package main
 
 import (
-	"dp/structural-pattern/composite"
+	"dp/behavioral-pattern/memento"
 )
 
 func main() {
@@ -12,5 +12,7 @@ func main() {
 	// state.Run()
 	// bridge.Run()
 	// proxy.Run()
-	composite.Run()
+	// composite.Run()
+	// chain_of_responsibility.Run()
+	memento.Run()
 }
