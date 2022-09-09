@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-config
+  namespace: mongo-ns
+data:
+  mongo.conf: |
+    storage:
+      dbPath: /data/db
+      journal:
+          enabled: true
+    net:
+      port: 27017
+      bindIpAll: true
+      tls:
+        mode: requireTLS
+        certificateKeyFile: /home/mongodb/node.pem
+        CAFile: /home/mongodb/root-ca.crt
+        clusterFile: /home/mongodb/node.pem
+    security:
+      clusterAuthMode: x509

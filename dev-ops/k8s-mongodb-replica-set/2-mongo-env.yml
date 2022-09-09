@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-env
+  namespace: mongo-ns
+data:
+  MONGO_INITDB_ROOT_USERNAME: root
+  MONGO_INITDB_DATABASE: ww_db
+  MONGO_USERNAME: ww_user

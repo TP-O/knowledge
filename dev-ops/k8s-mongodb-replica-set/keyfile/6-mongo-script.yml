@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-script
+  namespace: mongo-ns
+data:
+  prepare.sh: |
+    cat /home/mongodb/security/keyFile > /home/mongodb/keyFile
+    chmod 400 /home/mongodb/keyFile
+    chown -R mongodb:mongodb /home/mongodb/keyFile

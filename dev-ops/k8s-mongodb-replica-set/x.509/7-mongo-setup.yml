@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-setup
+  namespace: mongo-ns
+data:
+  1-create-user.sh: |
+    if [ "$K8S_POD_NAME" == "mongo-0" ]; then
+        mongosh \
+            --username ${MONGO_INITDB_ROOT_USERNAME} \
+            --password ${MONGO_INITDB_ROOT_PASSWORD} \
+            --authenticationDatabase admin \
+            --eval "db.getSiblingDB('\$external').runCommand({ \
+                  createUser: 'CN=admin', \
+                  roles: [{ \
+                      role: 'root', \
+                      db: 'admin' \
+                  }], \
+                  writeConcern: { w: 'majority' , wtimeout: 5000 }\
+              });"
+
+        mongosh ${MONGO_INITDB_DATABASE} \
+            --username ${MONGO_INITDB_ROOT_USERNAME} \
+            --password ${MONGO_INITDB_ROOT_PASSWORD} \
+            --authenticationDatabase admin \
+            --eval "db.getSiblingDB('\$external').runCommand({ \
+                createUser: 'CN=${MONGO_USERNAME}', \
+                  roles: [{ \
+                      role: 'dbOwner',
+                      db: '${MONGO_INITDB_DATABASE}' \
+                  }], \
+                  writeConcern: { \
+                      w: 'majority', \
+                      wtimeout: 5000 \
+                  }\
+              });"
+    fi
+  2-initiate-replica-set.sh: |
+    if [ "$K8S_POD_NAME" == "mongo-0" ]; then 
+        members="{_id: 0, host: 'mongo-0.mongo:27017'}"
+
+        for id in `seq 1 $(( $(echo $K8S_REPLICAS) - 1 ))`; do
+            members="${members}, {_id: $id, host: 'mongo-$id.mongo:27017'}"
+        done
+
+        s=0
+         
+        while [ $s == 0 ]; do
+            echo -e "\n\n[Mongo-Setup] Trying to initiate replica set...\n\n"
+
+            {
+                mongosh \
+                    --tls \
+                    --tlsCAFile /home/mongodb/root-ca.crt \
+                    --tlsCertificateKeyFile /home/mongodb/admin.pem \
+                    --authenticationDatabase "\$external" \
+                    --authenticationMechanism MONGODB-X509 \
+                    --host "${K8S_POD_NAME}.mongo" \
+                    --eval "rs.initiate({_id: 'rs0', members: [$members]});"
+
+                if [ $? == 0 ]; then
+                    s=1
+                    
+                    echo -e "\n\n[Mongo-Setup] Replica set has been initiated successfully!\n\n"
+                fi
+            } || echo . #Keep while loop from exting if command fails
+
+            sleep 10
+        done
+    fi &

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-security
+  namespace: mongo-ns
+data:
+  root-ca.crt: |
+    <content>
+  root-ca.key: |
+    <content>
+  admin.pem: |
+    <content>

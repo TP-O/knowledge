@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+  namespace: mongo-ns
+spec:
+  replicas: 3
+  serviceName: mongo
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+      namespace: mongo-ns
+    spec:
+      terminationGracePeriodSeconds: 5
+      initContainers:
+        - name: prepare
+          image: mongo
+          securityContext:
+            runAsUser: 0
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - /home/mongodb/scripts/prepare.sh
+          volumeMounts:
+            - name: mongo-dir
+              mountPath: /home/mongodb
+            - name: mongo-security
+              mountPath: /home/mongodb/security
+            - name: mongo-script
+              mountPath: /home/mongodb/scripts
+          env:
+            - name: K8S_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+      containers:
+        - name: mongo
+          image: mongo
+          workingDir: /home/mongodb
+          volumeMounts:
+            - name: mongo-dir
+              mountPath: /home/mongodb
+            - name: mongo-config
+              mountPath: /home/mongodb/config
+            - name: mongo-setup
+              mountPath: /docker-entrypoint-initdb.d
+            - name: mongo-volume-claim
+              mountPath: /data/db
+          ports:
+            - containerPort: 27017
+          env:
+            - name: K8S_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: K8S_REPLICAS
+              value: "3"
+          envFrom:
+            - configMapRef:
+                name: mongo-env
+            - secretRef:
+                name: mongo-secret
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - |
+              docker-entrypoint.sh mongod \
+                --replSet rs0 \
+                --config /home/mongodb/config/mongo.conf
+      volumes:
+        - name: mongo-dir
+          emptyDir: {}
+        - name: mongo-security
+          configMap:
+            name: mongo-security
+            defaultMode: 256 #0400
+        - name: mongo-config
+          configMap:
+            name: mongo-config
+            defaultMode: 292 #0444
+        - name: mongo-setup
+          configMap:
+            name: mongo-setup
+            defaultMode: 365 #0555
+        - name: mongo-script
+          configMap:
+            name: mongo-script
+            defaultMode: 365 #0555
+  volumeClaimTemplates:
+    - metadata:
+        name: mongo-volume-claim
+        namespace: mongo-ns
+      spec:
+        resources:
+          requests:
+            storage: 100Mi
+        accessModes:
+          - ReadWriteOnce

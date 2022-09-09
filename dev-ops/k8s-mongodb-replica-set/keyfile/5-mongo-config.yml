@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-config
+  namespace: mongo-ns
+data:
+  mongo.conf: |
+    storage:
+      dbPath: /data/db
+      journal:
+          enabled: true
+    net:
+      port: 27017
+      bindIpAll: true
+    security:
+      authorization: "enabled"
+      keyFile: "/home/mongodb/keyFile"
