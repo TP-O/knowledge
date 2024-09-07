@@ -235,7 +235,7 @@ var calculatePath = function (node, path) {
     } else if (completedLeftPath !== undefined && completedRightPath === undefined && completedLeftPath > node.path) {
         node.path = completedLeftPath;
     } else if (completedLeftPath !== undefined && completedRightPath !== undefined && (completedLeftPath > node.path || completedRightPath > node.path)) {
-        console.log(node.val, completedLeftPath, completedRightPath, node.path, node.val);
+        // console.log(node.val, completedLeftPath, completedRightPath, node.path, node.val);
 
         if (!(m > completedLeftPath + completedRightPath - 2*node.path + node.val)) {
             m = completedLeftPath + completedRightPath - 2*node.path + node.val;
